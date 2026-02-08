@@ -1,4 +1,6 @@
-﻿namespace HotWheels
+﻿using System;
+
+namespace HotWheels
 {
     internal class LinkedObjectAttribute : Attribute
     {

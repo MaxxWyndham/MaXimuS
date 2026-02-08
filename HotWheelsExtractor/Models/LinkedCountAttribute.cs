@@ -1,4 +1,6 @@
-﻿namespace HotWheels
+﻿using System;
+
+namespace HotWheels
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     internal class LinkedCountAttribute : Attribute

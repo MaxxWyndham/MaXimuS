@@ -1,14 +1,15 @@
 ﻿using HotWheels;
 using HotWheels.Models;
-
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Numerics;
 
 TypeDescriptor.AddAttributes(typeof(Vector2), new TypeConverterAttribute(typeof(Vector2Converter)));
 TypeDescriptor.AddAttributes(typeof(Vector3), new TypeConverterAttribute(typeof(Vector3Converter)));
 TypeDescriptor.AddAttributes(typeof(Vector4), new TypeConverterAttribute(typeof(Vector4Converter)));
 
-process(@"D:\HotwheelsGames");
+process(AppDomain.CurrentDomain.BaseDirectory);
 
 void process(string path)
 {

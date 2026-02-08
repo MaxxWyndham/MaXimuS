@@ -1,4 +1,6 @@
-﻿namespace HotWheels.Models
+﻿using System.IO;
+
+namespace HotWheels.Models
 {
     public interface ISelfReader
     {
