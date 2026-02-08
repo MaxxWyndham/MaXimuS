@@ -69,7 +69,6 @@ void process(string path)
 
         foreach (GeomObject g in mxs.GeomObjects)
         {
-            if (g.Name.StartsWith("\"chk", StringComparison.OrdinalIgnoreCase)) { continue; }
             if (g.Mesh is null) { continue; }
 
             dw.WriteLine($"o {g.Name}");
