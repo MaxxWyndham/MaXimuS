@@ -23,9 +23,9 @@ void process(string path)
 
         MXS mxs = MXS.Load(item.FullName);
 
-        string name = Path.GetFileNameWithoutExtension(path);
+        string name = Path.GetFileNameWithoutExtension(item.FullName);
 
-        using TextWriter mtl = new StreamWriter(Path.Combine(Path.GetDirectoryName(path), $"{name}.mtl"));
+        using TextWriter mtl = new StreamWriter(Path.Combine(path, $"{name}.mtl"));
 
         for (int i = 0; i < mxs.MaterialList.MaterialCount; i++)
         {
@@ -58,7 +58,7 @@ void process(string path)
 
         mtl.Close();
 
-        using TextWriter dw = new StreamWriter(Path.Combine(Path.GetDirectoryName(path), $"{name}.obj"));
+        using TextWriter dw = new StreamWriter(Path.Combine(path, $"{name}.obj"));
 
         dw.WriteLine($"mtllib {name}.MTL");
 
