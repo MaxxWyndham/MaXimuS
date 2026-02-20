@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 using MaXimuS.Models;
 
@@ -9,6 +10,86 @@ namespace MaXimuS
     {
         public static void Process(string path)
         {
+            foreach (var item in new DirectoryInfo(path).GetFiles("*.jrm"))
+            {
+                Console.WriteLine($"Processing {item.FullName}...");
+
+                JRM jrm = JRM.Load(item.FullName);
+
+                string name = Path.GetFileNameWithoutExtension(item.FullName);
+
+                int vOffset = 0;
+                int uvOffset = 0;
+
+                using TextWriter mtl = new StreamWriter(Path.Combine(Path.GetDirectoryName(item.FullName), $"{name}.mtl"));
+
+                foreach (string m in jrm.Materials.Distinct())
+                {
+                    mtl.WriteLine($"newmtl {m}");
+                    mtl.WriteLine("Ka 1.000000 1.000000 1.000000");
+                    mtl.WriteLine("Kd 1.000000 1.000000 1.000000");
+                    mtl.WriteLine("Ks 0.000000 0.000000 0.000000");
+                    mtl.WriteLine($"map_Kd {m}.dds");
+                }
+
+                mtl.Close();
+
+                using TextWriter tw = new StreamWriter(Path.Combine(Path.GetDirectoryName(item.FullName), $"{name}.obj"));
+
+                tw.WriteLine($"mtllib {name}.MTL");
+
+                process(tw, jrm.Model);
+
+                void process(TextWriter tw, JRMModel parent)
+                {
+                    foreach (JRMModel m in parent.Children)
+                    {
+                        tw.WriteLine($"o {m.Name}");
+                        //tw.WriteLine($"usemtl {jrm.Materials[m.MaterialId - 1]}");
+
+                        foreach (JRMMesh mesh in m.Meshes)
+                        {
+                            foreach (Vector3 v in mesh.Vertices)
+                            {
+                                float x = v.X + m.Position.X;
+                                float y = v.Y + m.Position.Y;
+                                float z = v.Z + m.Position.Z;
+
+                                //x = (float)(x * Math.Cos(m.Rotation.Z) - y * Math.Sin(m.Rotation.Z));
+                                //y = (float)(x * Math.Sin(m.Rotation.Z) + y * Math.Cos(m.Rotation.Z));
+
+                                tw.WriteLine($"v {x} {y} {z} 1");
+                            }
+
+                            foreach (Vector2 uv in mesh.UVs)
+                            {
+                                tw.WriteLine($"vt {uv.X} {uv.Y}");
+                            }
+
+                            foreach (Vector3 f in mesh.Faces)
+                            {
+                                if (mesh.UVs.Count > 0)
+                                {
+                                    tw.WriteLine($"f {f.X + vOffset}/{f.X + uvOffset} {f.Y + vOffset}/{f.Y + uvOffset} {f.Z + vOffset}/{f.Z + uvOffset}");
+                                }
+                                //else
+                                {
+                                    //tw.WriteLine($"f {f.X + vOffset} {f.Y + vOffset} {f.Z + vOffset}");
+                                }
+
+                            }
+
+                            vOffset += mesh.Vertices.Count;
+                            uvOffset += mesh.UVs.Count;
+                        }
+
+                        process(tw, m);
+                    }
+                }
+
+                tw.Close();
+            }
+
             foreach (var item in new DirectoryInfo(path).GetFiles("*.mxs"))
             {
                 Console.WriteLine($"Processing {item.FullName}...");

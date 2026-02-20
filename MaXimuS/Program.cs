@@ -19,3 +19,7 @@ else
 {
     Batch.Process(AppDomain.CurrentDomain.BaseDirectory);
 }
+
+//W3D w3d = W3D.Load(@"D:\HotwheelsGames\carena\TCR2TOGOTEXTUREBANK.W3D");
+
+
