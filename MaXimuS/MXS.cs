@@ -185,13 +185,13 @@ namespace MaXimuS
 
         public static object CreateObject(string name)
         {
-            var models = Assembly.GetExecutingAssembly().GetTypes().Where(t => string.Equals(t.Namespace, "HotWheels.Models", StringComparison.OrdinalIgnoreCase) && t.IsClass).ToArray();
+            var models = Assembly.GetExecutingAssembly().GetTypes().Where(t => string.Equals(t.Namespace, "MaXimuS.Models", StringComparison.OrdinalIgnoreCase) && t.IsClass).ToArray();
 
             foreach (var model in models)
             {
                 if (model.GetCustomAttribute<DisplayNameAttribute>().DisplayName == name)
                 {
-                    return Activator.CreateInstance(Type.GetType($"HotWheels.Models.{model.Name}", true, true));
+                    return Activator.CreateInstance(Type.GetType($"MaXimuS.Models.{model.Name}", true, true));
                 }
             }
 
