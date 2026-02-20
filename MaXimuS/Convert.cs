@@ -137,7 +137,7 @@ namespace MaXimuS
                     {
                         Name = $"\"{material.Name} #12\"",
                         Class = "\"Bitmap\"",
-                        SubNo = 6,
+                        SubNo = 9,
                         Amount = 1f,
                         Bitmap = $"\"@{name}.dds\"",
                         Type = "Spherical",
@@ -155,6 +155,31 @@ namespace MaXimuS
                         Filter = "Pyramidal"
                     }
                 });
+
+                if (Path.GetFileNameWithoutExtension(material.Texture).EndsWith("-o"))
+                {
+                    m.SubMaterials.Last().MapOpacity = new()
+                    {
+                        Name = $"\"{material.Name} #24\"",
+                        Class = "\"Bitmap\"",
+                        SubNo = 6,
+                        Amount = 1f,
+                        Bitmap = $"\"{material.Texture}\"",
+                        Type = "Screen",
+                        UTiling = 1,
+                        VTiling = 1,
+                        UVWrapFlags = 3,
+                        Row0 = new(1, 0, 0),
+                        Row1 = new(0, 1, 0),
+                        Row2 = new(0, 0, 1),
+                        Row3 = new(0, 0, 0),
+                        Blur = 1,
+                        NoiseAmount = 1,
+                        NoiseSize = 1,
+                        NoiseLevel = 1,
+                        Filter = "Pyramidal"
+                    };
+                }
             }
 
             m.NumSubMaterials = m.SubMaterials.Count;

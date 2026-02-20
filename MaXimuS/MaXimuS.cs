@@ -4,7 +4,7 @@ namespace MaXimuS
 {
     public static class MaXimuS
     {
-        public static Version Version { get; set; } = new(1, 0, 3);
+        public static Version Version { get; set; } = new(1, 0, 4);
 
         public static void Warn(string message)
         {
